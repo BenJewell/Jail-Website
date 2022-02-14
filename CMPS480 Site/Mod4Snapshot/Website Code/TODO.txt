@@ -1,0 +1,7 @@
+Merge Dashboard styling to teacher section
+Fix teacher section layout
+Merge in admin view code
+fix admin page structure
+Move signout buttons and fix icons in navbar for some sections
+
+~ Ben
