@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Good Grades: Student Gradebook">
+    <meta name="author" content="Emily Foglia, Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>Gradebook</title>
+
+    <script src="js/login-timeout.js"></script>
+    <script src="js/sort-table.js"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="CSS/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="CSS/dashboard.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Good Grades</a>
+      <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+      <div class="navbar-nav">
+      </div>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+          <div class="position-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="#">
+                  <span data-feather="home"></span>
+                  Dashboard
+                </a>
+              </li>
+              <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                <span>Courses</span>
+              </h6>
+              <li class="nav-item">
+                <a class="nav-link active" id="nav-btn1" href="#">
+                  <span data-feather="book-open"></span>
+                  Class 1
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="book"></span>
+                  Class 2
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="book"></span>
+                  Class 3
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="book"></span>
+                  Class 4
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="book"></span>
+                  Class 5
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="book"></span>
+                  Class 5
+                </a>
+              </li>
+              <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                <span>Account</span>
+              </h6>
+              <li class="nav-item">
+                <a class="nav-link" href="logout.html">
+                  <span data-feather="log-out"></span>
+                  Log Out
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Grades</h1>
+          </div>
+          <div id="grades-table">
+            <table class="table table-bordered table-striped sortable">
+             <thead class="table-primary">
+                <tr>
+                  <th class="w-25" scope="col">Assignment</th>
+                  <th class="text-center w-25" scope="col">Grade</th>
+                  <th class="text-center w-25" scope="col">Due Date</th>
+                  <th class="text-center w-25" scope="col">Missing</th>
+               </tr>
+              </thead>
+             <tbody>
+               <tr>
+                  <td scope="row">Module 1 Quiz</th>
+                  <td class="text-center">0/30</td>
+                  <td class="text-center">January 31, 2022</td>
+                  <td class="text-center"><span data-feather="check"></span></td>
+                </tr>
+               <tr>
+                <td scope="row">Module 1 Summary</th>
+                <td class="text-center">100/100</td>
+                <td class="text-center">January 31, 2022</td>
+                <td class="text-center"></td>
+               </tr>
+                <tr>
+                  <td scope="row">Module 1 Assignment</th>
+                  <td class="text-center">47/50</td>
+                  <td class="text-center">January 31, 2022</td>
+                  <td class="text-center"></td>
+               </tr>
+               <tr>
+                <td scope="row">Module 1 Journal</th>
+                <td class="text-center">10/10</td>
+                <td class="text-center">January 31, 2022</td>
+                <td class="text-center"></td>
+               </tr>
+             </tbody>
+            </table>
+          </div>
+
+          <div id="total-grade-table">
+            <table class="table table-bordered table-striped">
+             <thead class="table-primary">
+                <tr>
+                  <th scope="col">Course Grade:</th>
+                  <th class="text-center w-25" scope="col">82.6%</th>
+               </tr>
+              </thead>
+            </table>
+          </div>
+        </main>
+
+      </div>
+    </div>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+    <script src="js/dashboard.js"></script>
+
+  </body>
+</html>

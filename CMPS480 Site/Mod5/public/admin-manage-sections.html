@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.88.1">
+  <title>Dashboard Template · Bootstrap v5.1</title>
+
+  <script src="js/login-timeout.js"></script>
+  <script src="JS/sort-table.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script> -->
+  <!-- Allows icons to work: -->
+  <link href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
+  <script src="Lib/jPut/js/jput-2.js"></script>
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dashboard/">
+
+  <!-- Bootstrap core CSS -->
+  <link href="CSS/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+
+
+  <!-- Custom styles for this template -->
+  <link href="CSS/dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Good Grades</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+      data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  </header>
+
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="admin-department1.html">
+                <span data-feather="home"></span>
+                Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">
+                <span data-feather="book"></span>
+                Manage Courses
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="logout.html">
+                <span data-feather="log-out"></span>
+                Log Out
+              </a>
+            </li>
+          </ul>
+
+
+          <!--<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">-->
+
+          </li>
+          </ul>
+        </div>
+      </nav>
+
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Admin View</h1>
+          <!-- <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group me-2">
+              <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+              <span data-feather="calendar"></span>
+              This week
+            </button>
+          </div> -->
+        </div>
+
+        <!-- main page content, forked from admin dashboard -->
+        <h1 class="h3">Manage Courses</h1>
+        <!-- Debug area:
+        <ul jput="courses" jput-dataName="courses" jput-ajax_url="JSON/admin-view/manage-courses.json" jput-jsondata='[{"name":"User 1", "courseCode":"MATH 101"},{"name":"User 2"},{"name":"User 3"}]'>
+          <li>{{json.name}}</li>
+          <li>{{json.courseCode}}</li>
+          <li>{{json.sectionCode}}</li>
+          <li>{{json.numStudents}}</li>
+        </ul> -->
+
+        <!-- jput-jsondata='[{"name":"User 1","courseCode":"Math 101","sectionCode":"A1","numStudents":8}]' -->
+
+        <div class="table-responsive">
+          <table class="table table-striped table-sm sortable">
+            <thead>
+              <tr>
+                <th scope="col">Course Name</th>
+                <th scope="col">Course Code</th>
+                <th scope="col">Course Section</th>
+                <th scope="col">Students Registered</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody jput="courses" jput-dataName="courses" jput-ajax_url="JSON/admin-view/manage-courses.json" jput-repeat="numStudents">
+              <tr>
+                <td>{{json.name}}</td>
+                <td>{{json.courseCode}}</td>
+                <td>{{json.sectionCode}}</td>
+                <td>{{json.numStudents}}</td>
+                <td>
+                  <a href="">
+                    <div class="ui-icon ui-icon-pencil" style="display:inline-block; text-align: center;"></div>
+                  </a><a href="">
+                    <div class="ui-icon ui-icon-closethick" style="display:inline-block; text-align: center;"></div>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- <script>
+        //on document ready
+        $(document).ready(function(){
+            //your variable with your users information
+            var users=[{"name":"User 1"},{"name":"User 2"},{"name":"User 3"}];
+            /*
+            * Binding your json to jPut
+            * jPut.<yourTemplateName>.data
+            */
+            jPut.users.data=users;
+        });
+        </script>
+              
+        <ul jput="users">
+               <li>{{json.name}}</li>
+        </ul>  -->
+
+      </main>
+    </div>
+  </div>
+
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+    integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+    integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+    crossorigin="anonymous"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+
+</html>
