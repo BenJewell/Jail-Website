@@ -1,4 +1,4 @@
-const APIController = function () {
+// const APIController = function () {
     const clientId = "f73580adbc8d4eb3b983a308ca50b289";
     const clientSecret = "d97f18e5cbc044d7980c38e7d535504a";
 
@@ -8,7 +8,7 @@ const APIController = function () {
         const result = await fetch("http://accounts.spotify.com/api/token" {
             method: 'POST',
             headers {
-                'content-type:............' btoa
+                'content-type:............'
             }
         })
     }
@@ -18,7 +18,7 @@ const APIController = function () {
         const result = await fetch("" {
             method: 'GET',
             headers {
-                'content-type:............' btoa
+                'content-type:............'
             }
         })
     }
