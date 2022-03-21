@@ -1,0 +1,19 @@
+{
+  "name": "good-grades",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start-prod": "node app.js prod",
+    "start-dev": "nodemon app.js dev"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "express-jsonschema": "^1.1.6",
+    "morgan": "~1.9.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.15"
+  }
+}

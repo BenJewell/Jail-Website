@@ -1,0 +1,33 @@
+{
+	"course": {
+		"id": 1,
+		"name": "English 101",
+		"students": [
+			{
+				"id": 384204,
+				"name": "First Last",
+				"grade": 94.4
+			},
+			{
+				"id": 5942,
+				"name": "Random Name",
+				"grade": 92.6
+			},
+			{
+				"id": 25925,
+				"name": "Name Name",
+				"grade": 90.5
+			},
+			{
+				"id": 89724,
+				"name": "Name Last",
+				"grade": 84.5
+			},
+			{
+				"id": 93487,
+				"name": "Random Name II",
+				"grade": 98.5
+			}
+		]
+	}
+}

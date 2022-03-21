@@ -1,0 +1,28 @@
+{
+	"teachers": [
+		{
+			"name": "Mr.B",
+			"inputedGrades": "45",
+			"missingGrades": "0",
+			"overdueGrades": 0
+		},
+		{
+			"name": "Mr.C",
+			"inputedGrades": "36",
+			"missingGrades": "12",
+			"overdueGrades": 4
+		},
+		{
+			"name": "Miss.D",
+			"inputedGrades": "50",
+			"missingGrades": "6",
+			"overdueGrades": 7
+		},
+		{
+			"name": "Mrs.E",
+			"inputedGrades": "16",
+			"missingGrades": "26",
+			"overdueGrades": 0
+		}
+	]
+}
