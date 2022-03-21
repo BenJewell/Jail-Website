@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <title>Manage Courses | Admin | Good Grades</title>
+
+  <script src="js/login-timeout.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Allows icons to work: -->
+
+  <!-- Bootstrap core CSS -->
+  <link href="CSS/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+  <link href="https://cdn.datatables.net/rowgroup/1.1.4/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+
+
+  <style>
+    table.dataTable tr.dtrg-group td {
+      background-color: #cfe2ff;
+    }
+  </style>
+
+
+  <!-- Custom styles for this template -->
+  <link href="CSS/dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Good Grades</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+      data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </header>
+
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="admin-manage-sections.html">
+                <span data-feather="list"></span>
+                Manage Courses
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="admin-manage-users.html">
+                <span data-feather="users"></span>
+                Manage Users
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="admin-action-history.html">
+                <span data-feather="clock"></span>
+                Action History
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="logout.html">
+                <span data-feather="log-out"></span>
+                Log Out
+              </a>
+            </li>
+          </ul>
+          </li>
+          </ul>
+        </div>
+      </nav>
+
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Manage Courses and Sections</h1>
+        </div>
+
+
+        <div class="table-responsive">
+          <table class="table table-striped table-sm sortable" id="courseTable" style="width:100%;">
+            <thead>
+              <tr>
+                <th scope="col">Course ID</th>
+                <th scope="col">Course Code</th>
+                <th scope="col">Course Name</th>
+                <th scope="col">Section</th>
+                <th scope="col">Instructor</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('load', () => {
+      feather.replace();
+      let user = getUser("admin"); // get user & ensure their role, otherwise return to login page
+
+      $('#courseTable').DataTable({
+        rowGroup: {
+          dataSrc: 'primary_code'
+        },
+        columns: [
+          { "data": "course_id" },
+          { // combine primary and secondary code visually (e.g. ENG, 101 becomes ENG101
+            render: (data, type, row) => {
+              return `${row.primary_code}${row.secondary_code}`
+            }
+          },
+          { "data": "name" },
+          { // combine sections visually (e.g. 1, EA becomes 1EA)
+            render: (data, type, row) => {
+              return `${row.section_id}${row.section_code}`
+            }
+          },
+          { "data": "instructor" },
+          { // create a column at the end for the edit button, disable filtering by this column
+            searchable: false,
+            sortable: false,
+            render: (data, type, row) => {
+              return `<a class="btn btn-sm btn-outline-secondary editBtns" href="admin-edit-course.html?id=${row.course_id}">✎</a>`;
+            }
+          }
+        ],
+        ajax: {
+          url: "admin/courses",
+          beforeSend: function (request) {
+            request.setRequestHeader("x-session-key", user.key);
+          }
+        }
+      });
+    });
+
+  </script>
+
+
+  <script src="js/main.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+
+  <script type="text/javascript"
+    src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.11.4/b-2.2.2/sl-1.3.4/datatables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.1.4/js/dataTables.rowGroup.min.js"></script>
+
+</body>
+
+</html>

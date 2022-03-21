@@ -1,0 +1,62 @@
+<html>
+	<head>
+		<title>JSON tester</title>
+		<style>
+			body {
+				background-color:  gray;
+				margin:  1em;
+			}
+			input, button {
+				padding:  1em;
+				border:  none;
+				outline:  none;
+			}
+			input {
+				background-color:  lightgray;
+				min-width:  500px;
+				max-width:  50%;
+			}
+			div {
+				margin-top:  2em;
+				background-color:  #333333;
+				color:  limegreen;
+				font-family: Consolas, Courier, monospace;
+				border-radius: 10px;
+				padding:  2em;
+				word-break: break-word;
+			}
+		</style>
+	</head>
+	<body>
+		<input type="text" placeholder="JSON location (e.g. student-view/course.json" id="json" />
+		<button type="button" id="jsonButton">Load JSON</button>
+		<div id="json-output">
+			JSON will appear here
+		</div>
+
+		<script type="text/javascript">
+
+				const fetchData = async path => {
+
+					console.log(`Loading data from ${path}`);
+
+					let data = await fetch(path);
+					try {
+						data = await data.json();
+					} catch (e) {
+						return alert("JSON is invalid");
+					}
+					document.getElementById("json-output").innerHTML = JSON.stringify(data);
+
+				};
+			
+				window.addEventListener("load", _ => {
+					document.getElementById("jsonButton").addEventListener("click", _ => {
+						const jsonPath = document.getElementById("json").value;
+						fetchData(jsonPath);
+					});
+				});
+
+		</script>
+	</body>
+</html>

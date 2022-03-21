@@ -1,0 +1,49 @@
+{
+	"course": {
+		"id": 1,
+		"name": "English 101",
+		"grade": 93.2
+	},
+	"assignments": [
+		{
+			"id": 1,
+			"name": "Essay Week 1",
+			"points_possible": 100,
+			"points_received": 83,
+			"due_date": "Sat Jan 01 2022 00:00:00 GMT-0500",
+			"missing": false
+		},
+		{
+			"id": 2,
+			"name": "Quiz 1",
+			"points_possible": 20,
+			"points_received": 19,
+			"due_date": "Tue Jan 04 2022 00:00:00 GMT-0500",
+			"missing": false
+		},
+		{
+			"id": 3,
+			"name": "Midterm Essay - Rough Draft",
+			"points_possible": 5,
+			"points_received": 0,
+			"due_date": "Fri Jan 07 2022 00:00:00 GMT-0500",
+			"missing": true
+		},
+		{
+			"id": 4,
+			"name": "Test 1",
+			"points_possible": 150,
+			"points_received": 146,
+			"due_date": "Tue Jan 11 2022 00:00:00 GMT-0500",
+			"missing": false
+		},
+		{
+			"id": 5,
+			"name": "Homework - Module 2",
+			"points_possible": 10,
+			"points_received": 9,
+			"due_date": "Fri Jan 14 2022 00:00:00 GMT-0500",
+			"missing": false
+		}
+	]
+}

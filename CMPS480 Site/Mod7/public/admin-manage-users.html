@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <title>Manage Users | Admin | Good Grades</title>
+
+  <script src="js/login-timeout.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link href="CSS/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+  <!-- Custom styles for this template -->
+  <link href="CSS/dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Good Grades</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+      data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </header>
+
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="admin-manage-sections.html">
+                <span data-feather="list"></span>
+                Manage Courses
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="admin-manage-users.html">
+                <span data-feather="users"></span>
+                Manage Users
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="admin-action-history.html">
+                <span data-feather="clock"></span>
+                Action History
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="logout.html">
+                <span data-feather="log-out"></span>
+                Log Out
+              </a>
+            </li>
+          </ul>
+          </li>
+          </ul>
+        </div>
+      </nav>
+
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Manage Users</h1>
+          <div class="right"><a class="btn btn-sm btn-secondary" href="admin-create-user.html">+ Create User</a></div>
+        </div>
+
+
+        <div id="message-users" class="alert" role="alert" style="display: none;">
+          There was an error saving the changes. Please try again later.
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-striped table-sm sortable" id="userTable" style="width:100%;">
+            <thead>
+              <tr>
+                <th scope="col">User ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email Address</th>
+                <th scope="col">Role</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    let deleteUser;
+    window.addEventListener('load', () => {
+
+      feather.replace();
+      let user = getUser("admin");
+
+      function showMessage(section, type, message) {
+        document.getElementById(`message-${section}`).className = `alert alert-${type}`;
+        document.getElementById(`message-${section}`).innerHTML = message;
+        document.getElementById(`message-${section}`).style.display = "block";
+      }
+
+      deleteUser = async function (studentId) {
+        if (confirm("Are you sure you want to delete this user?")) {
+          try {
+            let result = await apiCall(`admin/users/${getQueryVariable('id')}}`, "DELETE");
+            if (result.success === false)
+              return showMessage("users", "danger", result.message || "There was an error");
+            studentTable.ajax.reload();
+            showMessage("users", "success", "This user could not be deleted.");
+          } catch (e) {
+            showMessage("users", "danger", "The user could not be deleted.");
+          }
+        }
+      }
+
+      $('#userTable').DataTable({
+        ajax: {
+          url: "./admin/users",
+          beforeSend: function (request) {
+            request.setRequestHeader("x-session-key", user.key);
+          }
+        },
+        columns: [null, null, null, null, null,
+          { // create a column at the end for the edit button, disable filtering by this column
+            searchable: false,
+            sortable: false,
+            render: (data, type, row) => {
+              return `
+                <a class="btn btn-sm btn-outline-secondary editBtns" href="admin-edit-user.html?id=${row[0]}">✎</a>
+                <a class="btn btn-sm btn-outline-secondary disabled" href="javascript:deleteUser(${row[0]})">&#x2715;</a>
+            `;
+            }
+          }]
+
+      });
+    });
+
+  </script>
+
+
+  <script src="js/main.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+
+  <script type="text/javascript"
+    src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.11.4/b-2.2.2/sl-1.3.4/datatables.min.js"></script>
+
+</body>
+
+</html>

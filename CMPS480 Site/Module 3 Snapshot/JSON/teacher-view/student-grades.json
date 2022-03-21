@@ -1,0 +1,49 @@
+{
+	"assignments": [
+		{
+			"id": 1,
+			"name": "Essay assignment",
+			"points_total": 100,
+			"points_possible": 84,
+			"percentage": 84,
+			"missing": false,
+			"active": true
+		},
+		{
+			"id": 2,
+			"name": "Homework #1",
+			"points_total": 100,
+			"points_possible": 42,
+			"percentage": 42,
+			"missing": false,
+			"active": true
+		},
+		{
+			"id": 3,
+			"name": "Homework #2",
+			"points_total": 100,
+			"points_possible": 0,
+			"percentage": 0,
+			"missing": true,
+			"active": true
+		},
+		{
+			"id": 4,
+			"name": "Test 1",
+			"points_total": 100,
+			"points_possible": 110,
+			"percentage": 110,
+			"missing": false,
+			"active": true
+		},
+		{
+			"id": 5,
+			"name": "Test 2",
+			"points_total": 100,
+			"points_possible": 0,
+			"percentage": 42,
+			"missing": false,
+			"active": false
+		}
+	]
+}

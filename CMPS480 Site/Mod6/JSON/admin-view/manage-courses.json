@@ -1,0 +1,28 @@
+{
+	"courses": [
+		{
+			"name": "Intro to the best language ever!",
+			"courseCode": "English 101",
+			"sectionCode": "A1",
+			"numStudents": 8
+		},
+		{
+			"name": "Boring class 1!",
+			"courseCode": "English 202",
+			"sectionCode": "A1",
+			"numStudents": 30
+		},
+		{
+			"name": "Boring class 3!",
+			"courseCode": "Math 133",
+			"sectionCode": "A1",
+			"numStudents": 10
+		},
+		{
+			"name": "Boring class 2!",
+			"courseCode": "Math 320",
+			"sectionCode": "A1",
+			"numStudents": 8231
+		}
+	]
+}
