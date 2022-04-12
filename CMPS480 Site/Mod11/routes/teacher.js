@@ -124,7 +124,7 @@ step 1: split ID to get assignment ID and student ID
 step 2: update grades table with changes
 step 3: return success
 */
-router.post('/grades/single-update', validate({ body: gradeSchema }), function (req, res, next) {
+router.post('/grades/single-update', auth.verifySessionAndRole("teacher"), validate({ body: gradeSchema }), function (req, res, next) {
   // step 1
   let idString = String(req.body.ids).substring(11);
   let IDarry = idString.split("-");
@@ -144,9 +144,17 @@ router.post('/grades/single-update', validate({ body: gradeSchema }), function (
     ],
     (data) => {
       //step 3
-      log_action(res.locals.userId, `added/updated grade id ${req.body.grades_id} to`, req.params.id, "Grades")
-      return res.send({ success: true });
     });
-});
+  query("Select first_name, last_name from Users where user_id = ?", [res.locals.userId], (teacherData, error) => {
+    console.log("trying to get record for", res.locals.userId)
+    query("Select first_name, last_name from Users where user_id = ?", [studentId], (studentData, error) => {
+      query("Select name from Assignments where assignment_id = ?", [assignmentId], (assignmentData, error) => {
+        log_action(`${teacherData[0].first_name} ${teacherData[0].last_name} entered/updated student (${studentId}) ${studentData[0].first_name}
+      ${studentData[0].last_name}'s grade for assignment ${assignmentData[0].name} (${assignmentId})`)
+        return res.send({ success: true });
+      })
+    });
+  });
+})
 
 module.exports = router;

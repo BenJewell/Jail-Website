@@ -30,7 +30,7 @@ if (process.argv[2] === "prod") {
   http.createServer(function (req, res) {
     res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
     res.end();
-  }).listen(80);// redirect port 80 to 443
+  }).listen(8080);// redirect port 80 to 443
 }
 else {
   console.log("Running in DEVELOPMENT mode")

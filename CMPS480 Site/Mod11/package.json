@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start-prod": "node app.js prod",
+    "start-prod": "node app_fm.js prod",
     "start-dev": "nodemon app.js dev",
     "start": "node app.js dev"
   },
@@ -13,6 +13,7 @@
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-jsonschema": "^1.1.6",
+    "forever-monitor": "^3.0.3",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.15"
