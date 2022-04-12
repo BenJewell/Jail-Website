@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Edit Course | Admin | Good Grades</title>
+
+    <script src="js/login-timeout.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Allows icons to work: -->
+
+    <!-- Bootstrap core CSS -->
+    <link href="CSS/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
+    <!-- Custom styles for this template -->
+    <link href="CSS/dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Good Grades</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</header>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"></nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-5">
+            <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Edit Course and Section</h1>
+            </div>
+
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                            d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </symbol>
+            </svg>
+            <div class="container">
+
+                <div class="row">
+                    <div id="message-course" class="alert" role="alert" style="display: none;">
+                        There was an error saving the changes. Please try again later.
+                    </div>
+                    <div class="col" style="border-right: solid 1px #dcdcdc;">
+                        <h3>Course</h3>
+
+                        <form class="row g-3" id="course-form">
+
+                            <div class="col-md-12">
+                                <label for="course_name" class="form-label">Course Name</label>
+                                <input type="text" class="form-control" id="course_name">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="course_primary_code" class="form-label">Primary Code</label>
+                                <input type="text" class="form-control" id="course_primary_code">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="course_secondary_code" class="form-label">Secondary Code</label>
+                                <input type="text" class="form-control" id="course_secondary_code">
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="course_description" class="form-label">Course Description</label>
+                                <input type="text" class="form-control" id="course_description">
+                            </div>
+
+                            <div class="col-12">
+
+                                <div class="alert alert-warning d-flex align-items-center" role="alert">
+                                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img"
+                                         aria-label="Warning:">
+                                        <use xlink:href="#exclamation-triangle-fill"/>
+                                    </svg>
+                                    <div>
+                                        Notice: Editing a course will also edit all sections associated with this
+                                        course.
+                                    </div>
+                                    <button type="submit" class="btn btn-warning" style="margin-left: 7px;">Update
+                                    </button>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                    <div class="col">
+                        <h3>Section</h3>
+
+                        <form class="row g-3" id="section-form">
+
+                            <div class="col-md-12">
+                                <label for="section_instructor" class="form-label">Instructor</label>
+                                <select id="section_instructor" class="form-select"></select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="section_section_id" class="form-label">Section ID</label>
+                                <input type="text" class="form-control disabled" id="section_section_id" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="section_section_code" class="form-label">Section Code</label>
+                                <input type="text" class="form-control" id="section_section_code">
+                            </div>
+
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary">Update Section</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row" style="border-top: solid 1px #dcdcdc; padding-top: 20px;">
+                    <div id="message-student" class="alert" role="alert" style="display: none;">
+                        There was an error saving the changes. Please try again later.
+                    </div>
+                    <div class="col-4">
+                        <h4>Add Student</h4>
+
+                        <form class="row g-3" id="student-form">
+
+                            <div class="col-md-12">
+                                <label for="add-student" class="form-label">Student Name</label>
+                                <select id="add-student" class="form-select"></select>
+                            </div>
+
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary">Register Student</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-8">
+
+                        <h4>Student Registrations</h4>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-sm sortable" id="students" style="width:100%;">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Student ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email Address</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- edit -->
+        </main>
+    </div>
+</div>
+
+<script>
+  let deleteStudent;
+  window.addEventListener('load', async () => {
+    feather.replace();
+    let user = getUser("admin");
+    const course = await apiCall(`admin/section/${getQueryVariable('id')}`);
+
+    // set values of form elements
+    for (let key in course.course) {
+      let val = course.course[key];
+      setValue(`course_${key}`, val);
+    }
+
+    for (let key in course.section) {
+      let val = course.section[key];
+      setValue(`section_${key}`, val);
+    }
+
+    /*
+    *
+    * datatable handling
+    * adds functionality for rendering student list for this section
+    *
+     */
+
+
+    deleteStudent = async function (studentId) {
+      if (confirm("Are you sure you want to delete this student from this course section?")) {
+        try {
+          let result = await apiCall(`admin/section/${getQueryVariable('id')}/students/${studentId}`, "DELETE");
+          if (result.success === false)
+            return showMessage("student", "danger", result.message || "There was an error");
+          studentTable.ajax.reload();
+          showMessage("student", "success", "The student has been removed from the course section.");
+        } catch (e) {
+          showMessage("student", "danger", "The student could not be deleted. Ensure they are enrolled and please try again.");
+        }
+      }
+    }
+
+    const studentTable = $('#students').DataTable({
+      ajax: {
+        url: `admin/section/${getQueryVariable('id')}/students`,
+        beforeSend: function (request) {
+          request.setRequestHeader("x-session-key", user.key);
+        }
+      },
+      columns: [
+        {"data": "student_id"},
+        {
+          render: (data, type, row) => {
+            return `${row.first_name} ${row.last_name}`;
+          }
+        },
+        {"data": "email_address"},
+        { // create a column at the end for the edit button, disable filtering by this column
+          searchable: false,
+          sortable: false,
+          render: (data, type, row) => {
+            return `
+                <a class="btn btn-sm btn-outline-secondary" href="admin-edit-user.html?id=${row.student_id}">✎</a>
+                <a class="btn btn-sm btn-outline-danger" href="javascript:deleteStudent(${row.student_id})">&#x2715;</a>
+            `;
+          }
+        }
+      ]
+    });
+
+
+    /*
+    *
+    * select2 handling
+    * adds functionality for searchable dropdown box (searching for students, instructors)
+    *
+     */
+
+    $('#section_instructor').append($('<option>', {
+      value: course.section.instructor_id,
+      selected: true,
+      text: course.section.instructor
+    })).select2({
+      ajax: {
+        delay: 250,
+        dataType: 'json',
+        url: 'admin/search/teacher',
+        beforeSend: function (request) {
+          request.setRequestHeader("x-session-key", user.key);
+        },
+        processResults: function (data) {
+          return {
+            results: data.items,
+          };
+        }
+      },
+      minimumInputLength: 1,
+      placeholder: "Search for a name",
+    });
+    $("#add-student").select2({
+      ajax: {
+        delay: 250,
+        dataType: 'json',
+        url: 'admin/search/student',
+        beforeSend: function (request) {
+          request.setRequestHeader("x-session-key", user.key);
+        },
+        processResults: function (data) {
+          return {
+            results: data.items,
+          };
+        }
+      },
+      minimumInputLength: 1,
+      placeholder: "Search for a name",
+    });
+
+    /*
+    *
+    * Form handling
+    *
+     */
+
+
+    function showMessage(section, type, message) {
+      document.getElementById(`message-${section}`).className = `alert alert-${type}`;
+      document.getElementById(`message-${section}`).innerHTML = message;
+      document.getElementById(`message-${section}`).style.display = "block";
+    }
+
+    document.getElementById("student-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      let studentId = Number($("#add-student")[0].value);
+      if (!studentId || isNaN(studentId)) {
+        return showMessage("student", "danger", "Please select a valid student")
+      }
+      if (confirm("Are you sure you want to register this student for this course section?")) {
+        try {
+          let result = await apiCall(`admin/section/${getQueryVariable('id')}/students`, "POST", {
+            student_id: studentId
+          });
+          if (result.success === false)
+            return showMessage("student", "danger", result.message || "There was an error");
+          studentTable.ajax.reload();
+          showMessage("student", "success", "The student has been registered for the course section!");
+        } catch (e) {
+          showMessage("student", "danger", "The student could not be registered. Ensure they are not already enrolled and please try again.");
+        }
+      }
+    });
+
+    document.getElementById("course-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      try {
+        await apiCall(`admin/course/${getQueryVariable('id')}`, "PUT", {
+          name: getValue("course_name"),
+          description: getValue("course_description"),
+          primary_code: getValue("course_primary_code"),
+          secondary_code: getValue("course_secondary_code"),
+        });
+        showMessage("course", "success", "The course section has been updated.");
+      } catch (e) {
+        showMessage("course", "danger", "The course section could not be updated. Please ensure all fields are valid and try again.");
+      }
+
+    });
+
+    document.getElementById("section-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      let instructorId = Number($("#section_instructor")[0].value);
+      if (!instructorId || isNaN(instructorId)) {
+        return showMessage("course", "danger", "Please select a valid instructor")
+      }
+      try {
+        await apiCall(`admin/section/${getQueryVariable('id')}`, "PUT", {
+          instructor_id: instructorId,
+          section_code: getValue("section_section_code")
+        });
+        showMessage("course", "success", "The course section has been updated.");
+      } catch (e) {
+        showMessage("course", "danger", "The course section could not be updated. Please ensure all fields are valid and try again.");
+      }
+
+    });
+  });
+
+</script>
+
+
+<script src="js/main.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+
+<script type="text/javascript"
+        src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.11.4/b-2.2.2/sl-1.3.4/datatables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+</body>
+
+</html>
