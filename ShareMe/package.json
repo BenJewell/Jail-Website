@@ -1,0 +1,28 @@
+{
+  "name": "shareme",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BenJewell/ShareMe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BenJewell/ShareMe/issues"
+  },
+  "homepage": "https://github.com/BenJewell/ShareMe#readme",
+  "dependencies": {
+    "express": "~4.16.1",
+    "greenlock-express": "^4.0.3",
+    "nodemon": "^2.0.15",
+    "socket.io": "^4.4.1",
+    "socket.io-file": "^2.0.31",
+    "socketio-file-upload": "^0.7.3"
+  },
+  "keywords": []
+}

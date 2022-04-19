@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <link href="/css/style.css" rel="stylesheet" as="style">
+
+<head>
+    <title>QR code generator</title>
+</head>
+
+<body>
+<div class="wrapper">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script type="text/javascript" src="libs/jquery-qrcode-master/jquery.qrcode.min.js"></script>
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"
+        integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
+        crossorigin="anonymous"></script>
+    <link href="styles.css" rel="stylesheet">
+    <script src="scripts.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.1/download.min.js"></script>
+  
+    <p>Scan QR-Code with Phone</p>
+    <script>initiate("pc")</script>
+    <div id="qrcode"></div>
+    <h2 id="textcode"></h2>
+    <h3><a href="/phone.html">Is this device a phone? Click here</a></h3>
+    <h4><a href="/sender.html">File transfer sender Click here</a></h4>
+    <h5><a href="/receiver.html">File transfer receiver Click here</a></h5>
+
+
+</div>
+</body>
+
+</html>
