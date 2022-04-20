@@ -1,0 +1,265 @@
+<html>
+
+<head>
+    <title id="title">Good Grades</title>
+
+    <script src="js/login-timeout.js"></script>
+    <script src="js/sort-table.js"></script>
+    <!-- Feather icons -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+        integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+        crossorigin="anonymous"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="CSS/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="CSS/dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="teacher-dashboard.html">Good Grades</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"></nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <span class="d-flex align-items-center mt-3 mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
+                        <h2 id="studentName">First Last</h2>
+                    </span>
+                    <div class="btn-group me-1">
+                        <button id="assignmentListBtn" type="button" class="btn btn-sm btn-outline-secondary"
+                            style="font-size:16pt; margin-top: 10px;">Return to Course</button>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div id="addError" class="alert alert-danger" role="alert" style="display: none;">
+                        There was an error saving the changes. Please try again later.
+                    </div>
+
+                    <div id="successMessage" class="w-25 alert alert-success alert-dismissible" style="display: none;">
+                        <strong>Success!</strong> Changes saved. The page will now refresh.
+                    </div>
+
+                    <h3 class="mt-5 border-bottom" id="formTitle" style="display: none;">Edit Grade</h3>
+                    <form class="row gy-2 gx-3 align-items-center pb-5 border-bottom" id="assignmentForm"
+                        style="display: none;">
+                        <div class="col-auto">
+                            <label for="autoSizingInput">Name</label>
+                            <input readonly="readonly" type="text" class="form-control" id="assignmentName"
+                                placeholder="Assignment Name">
+                        </div>
+                        <div class="col-auto">
+                            <label for="autoSizingInput">Description</label>
+                            <input readonly="readonly" type="text" class="form-control" id="assignmentDescription"
+                                placeholder="Assignment Description">
+                        </div>
+                        <div class="col-auto">
+                            <label for="autoSizingInput">Due Date/Time</label>
+                            <input readonly="readonly" type="text" class="form-control" id="assignmentDue"
+                                placeholder="Assignment Due Date/Time">
+                        </div>
+                        <div class="col-auto">
+                            <label for="autoSizingInputPoints">Points Received</label>
+                            <input type="text" class="form-control" id="pointsReceived" placeholder="Points Received">
+                        </div>
+                        <div class="col-auto">
+                            <label for="autoSizingInputPointsTotal">Points Possible</label>
+                            <input readonly="readonly" type="text" class="form-control" id="pointsPossible"
+                                placeholder="Points Possible">
+                        </div>
+                        <div class="col-auto">
+                            <label for="autoSizingInstructorNotes">Notes</label>
+                            <input type="text" class="form-control" id="instructorNotes"
+                                placeholder="Instructor Notes">
+                        </div>
+                        <div class="col-auto">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="missingCheck">
+                                <label class="form-check-label" for="missingCheck">
+                                    Missing
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="activeCheck">
+                                <label class="form-check-label" for="activeCheck">
+                                    Active
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-auto" id="auditFormElement">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="auditCheck">
+                                <label class="form-check-label" for="auditCheck">
+                                    Resolve Audit?
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-auto" id="fieldsBtns">
+                            <button type="button" class="btn btn-primary" id="saveEdits">Save Edits</button>
+                            <button type="button" class="btn btn-secondary" id="cancelEdits">Cancel Edits</button>
+                        </div>
+                    </form>
+                </div>
+                <h3 class="mt-5">Assignments</h3>
+                <div class="table-responsive">
+                    <table class="table table-striped sortable">
+                        <thead>
+                            <tr>
+                                <th scope="col">Category</th>
+                                <th scope="col">Assignment Name</th>
+                                <th scope="col">Due Date/Time</th>
+                                <th scope="col">Points Received</th>
+                                <th scope="col">Points Possible</th>
+                                <th scope="col">Percentage</th>
+                                <th scope="col">Missing</th>
+                                <th scope="col">Active</th>
+                                <th scope="col">Flagged for Audit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assignments">
+
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+    </div>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/tableFunctions.js" type="text/javascript"></script>
+    <script src="js/main.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        window.addEventListener("DOMContentLoaded", async () => {
+            const api = await apiCall(`teacher/student/${getQueryVariable('studentId')}/${getQueryVariable('courseId')}`);
+            document.getElementById("assignmentListBtn").setAttribute("onclick", `window.location.href='teacher-course.html?id=${getQueryVariable('courseId')}'`);
+            document.getElementById("studentName").innerHTML = api.first_name + " " + api.last_name;
+
+            var star = feather.icons['star'].toSvg();
+            let badges = {
+                missing: '<span class="badge bg-danger">Missing</span>',
+                not_missing: '<span class="badge bg-success">Not missing</span>',
+                active: '<span class="badge bg-success">Active</span>',
+                inactive: '<span class="badge bg-warning">Not active</span>',
+                flagged: `<span class="badge bg-info">${star}</span>`,
+            };
+            document.getElementById("assignments").innerHTML = "";
+            var edit = feather.icons.edit.toSvg();
+            for (let assignment of api.grades) {
+                var graded = checkNull(assignment.points_received);
+                document.getElementById("assignments").innerHTML += `
+                   <tr>
+                        <td>${assignment.assignment_category}</td>
+                        <td>${assignment.name}</td>
+                        <td>${assignment.formatted_due_date}
+                        <td>${graded}</td>
+                        <td>${assignment.points_possible}</td>
+                        <td>${graded === "-" ? "-" : (assignment.points_received / assignment.points_possible * 100) + '%'}</td>
+                        <td>${assignment.missing === 1 ? badges.missing : badges.not_missing}</td>
+                        <td>${assignment.active === 1 ? badges.active : badges.inactive}</td>
+                        <td>${assignment.flagged_for_audit === 1 ? badges.flagged + '<p style="display: none;">1</p>' : '<p style="display: none;">0</p>'}</td>
+                        <td><button class="btn btn-outline-secondary editBtns" id="editbutton_${assignment.assignment_id}-${assignment.student_id}">✎</button></td>
+                    </tr>
+                `;
+            }
+
+            //Fill edit fields and show them
+            async function editBtn(event) {
+                event.preventDefault();
+                ids = event.target.id;
+                const editApi = await apiCall(`teacher/grades/single/${ids}`);
+                document.getElementById("assignmentName").value = editApi.name;
+                document.getElementById("assignmentDescription").value = editApi.description;
+                document.getElementById("assignmentDue").value = editApi.due_date;
+                document.getElementById("pointsReceived").value = editApi.points_received;
+                document.getElementById("pointsPossible").value = editApi.points_possible;
+                document.getElementById("instructorNotes").value = editApi.instructor_notes;
+                document.getElementById("missingCheck").checked = (editApi.missing === 1 ? true : false);
+                document.getElementById("activeCheck").checked = (editApi.active === 1 ? true : false);
+                if(editApi.flagged_for_audit === 0){
+                    document.getElementById("auditFormElement").style.display = "none";
+                    document.getElementById("auditCheck").checked = false;
+                }
+                document.getElementById("formTitle").style.display = "block";
+                document.getElementById("assignmentForm").style.display = "block";
+            }
+
+            //Assign on click to edit buttons
+            var buttons = document.getElementsByClassName('editBtns');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener("click", (event) => editBtn(event));
+            }
+
+            //Reset edit fields and hide them
+            function cancelEdits(event) {
+                event.preventDefault();
+                document.getElementById("assignmentName").value = "";
+                document.getElementById("assignmentDescription").value = "";
+                document.getElementById("assignmentDue").value = "";
+                document.getElementById("pointsReceived").value = "";
+                document.getElementById("pointsPossible").value = "";
+                document.getElementById("instructorNotes").value = "";
+                document.getElementById("missingCheck").checked = false;
+                document.getElementById("formTitle").style.display = "none";
+                document.getElementById("activeCheck").checked = false;
+                document.getElementById("auditFormElement").style.display = "block";
+                document.getElementById("auditCheck").checked = false;
+                document.getElementById("assignmentForm").style.display = "none";
+                return false;
+            }
+            //Assign on click to cancel button
+            document.getElementById("cancelEdits").addEventListener("click", (event) => cancelEdits(event), false);
+
+            //Create function for save button
+            async function saveEdits(event) {
+                event.preventDefault();
+                //modify points received for database formatting
+                let pointsReceived = document.getElementById("pointsReceived").value;
+                if (isNaN(parseInt(pointsReceived)) || pointsReceived === "") {
+                    pointsReceived = null;
+                } else {
+                    pointsReceived = parseInt(pointsReceived);
+                }
+                let missingCheck = document.getElementById("missingCheck").checked ? 1 : 0;
+                let activeCheck = document.getElementById("activeCheck").checked ? 1 : 0;
+                var auditCheck;
+                if(document.getElementById("auditFormElement").style.display === "none"){
+                    auditCheck = 0;
+                } else {
+                    auditCheck = document.getElementById("auditCheck").checked ? 0 : 1;
+                }
+                let instructorNotes = document.getElementById("instructorNotes").value;
+                let saveApi = await apiCall("teacher/grades/single-update", "POST", { ids: ids, pointsReceived: pointsReceived, missingCheck: missingCheck, activeCheck: activeCheck, auditCheck: auditCheck, instructorNotes: instructorNotes });
+                if (saveApi.success) {
+                    document.getElementById("successMessage").style.display = "inline";
+                    setTimeout(() => window.location.reload(), 2500);
+                } else {
+                    cancelEdits();
+                    showError("There was an error saving the changes. Please try again later.");
+                }
+                return false;
+            }
+
+            //Assign on click to save button
+            document.getElementById("saveEdits").addEventListener("click", (event) => saveEdits(event), false);
+
+            //Helper: Show error message
+            function showError(text) {
+                document.getElementById("addError").style.display = "block";
+                document.getElementById("addError").innerHTML = text;
+            }
+        });
+    </script>
+    <script type="text/javascript">feather.replace({ 'aria-hidden': 'true' })</script>
+</body>
+
+</html>
