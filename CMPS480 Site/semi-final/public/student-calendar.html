@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Good Grades: Student Gradebook">
+  <meta name="author" content="Emily Foglia, Bootstrap contributors">
+  <link rel="icon" href="Images/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="Images/favicon.ico" type="image/x-icon">
+  <title id="title">Good Grades: Calendar</title>
+
+  <!-- Feather icons -->
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+    integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+    crossorigin="anonymous"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Bootstrap core CSS -->
+  <link href="CSS/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles -->
+  <link href="CSS/dashboard.css" rel="stylesheet">
+
+  <script src="js/login-timeout.js"></script>
+</head>
+
+<body>
+
+  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow noprint">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="student-dashboard.html">Good Grades</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+      data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-nav">
+    </div>
+  </header>
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"></nav>
+
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2" id="courseTitle">Assignment Calendar</h1>
+          <button type="button" class="btn btn-primary float-end noprint" onClick="window.print();">
+            Print Page <span data-feather="printer"></span>
+          </button>
+        </div>
+        <div class="pb-3" id="course-buttons"></div>
+        <div>
+          <ul class="list-group" id="assignments-list"></ul>
+        </div>
+      </main>
+
+    </div>
+  </div>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    window.addEventListener("load", async () => {
+      const apiCalendar = await apiCall(`student/calendar`);
+      document.getElementById("assignments-list").innerHTML = "";
+      for (let api of apiCalendar) {
+        //Make course button
+        if (!(document.getElementById(`course-id_${api.course_id}`))) {
+          document.getElementById("course-buttons").innerHTML += `
+            <button type="button" class="btn btn-primary courseBtn" id="course-id_${api.course_id}">${api.course_name}</button>`;
+        }
+        //Make date header
+        if (!(document.getElementById(`id${api.due_date}`))) {
+          document.getElementById("assignments-list").innerHTML += `
+                <li class="list-group-item d-flex justify-content-between align-items-center date">
+                  <h1 class="h2" id="id${api.due_date}">${api.due_date}</h1>
+                </li> `;
+        }
+        //List assignments
+        document.getElementById("assignments-list").innerHTML += `
+              <li class="list-group-item d-flex justify-content-between align-items-center course${api.course_id}">
+                ${api.course_name} - ${api.assignment_name}
+                <span class="badge alert-primary tag-pill">${api.due_time}</span>
+              </li>
+          `;
+      }
+      //Toggle button state & assignment visibility by course
+      function toggleBtn(event) {
+        event.preventDefault();
+        id = event.target.id;
+        courseId = id.replace("course-id_", "");
+        list = document.getElementsByClassName("course" + courseId);
+        for (let assignment of list) {
+          if (assignment.classList.contains("d-none")) {
+            assignment.classList.remove("d-none");
+            assignment.classList.add("d-flex");
+            document.getElementById(id).classList.remove("btn-secondary", "noprint")
+            document.getElementById(id).classList.add("btn-primary");
+            showDateHeaders();
+          } else {
+            assignment.classList.remove("d-flex");
+            assignment.classList.add("d-none");
+            document.getElementById(id).classList.remove("btn-primary");
+            document.getElementById(id).classList.add("btn-secondary", "noprint");
+            hideDateHeaders();
+          }
+        }
+      }
+      //If all elements are d-none before next date or end of table, hide date
+      function hideDateHeaders() {
+        var headers = document.getElementsByClassName("date");
+        var bottom = false;
+        for (let date of headers) {
+          var sibling = date.nextElementSibling;
+          while (sibling.classList.contains("d-none")) {
+            if (sibling.nextElementSibling === null) {
+              bottom = true;
+              break;
+            }
+            sibling = sibling.nextElementSibling;
+          }
+          if (sibling.classList.contains("date") || bottom) {
+            date.classList.remove("d-flex");
+            date.classList.add("d-none");
+          }
+        }
+      }
+      //If any elements are d-flex before next date or end of table, show date
+      function showDateHeaders() {
+        var headers = document.getElementsByClassName("date");
+        var bottom = false;
+        for (let date of headers) {
+          var sibling = date.nextElementSibling;
+          while (sibling.classList.contains("d-none")) {
+            if (sibling.nextElementSibling === null) {
+              bottom = true;
+              break;
+            }
+            sibling = sibling.nextElementSibling;
+          }
+          if (!sibling.classList.contains("date") && !bottom) {
+            date.classList.remove("d-none");
+            date.classList.add("d-flex");
+          }
+        }
+      }
+      //Assign onclick to class buttons
+      var btns = document.getElementsByClassName("courseBtn");
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", (event) => toggleBtn(event));
+      }
+    });
+  </script>
+  <script type="text/javascript">feather.replace({ 'aria-hidden': 'true' })</script>
+</body>
+
+</html>

@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Good Grades: Student Gradebook">
+  <link rel="icon" href="Images/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="Images/favicon.ico" type="image/x-icon">
+  <title id="title">Good Grades: Gradebook</title>
+
+  <!-- Feather icons -->
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+    integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+    crossorigin="anonymous"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Bootstrap core CSS -->
+  <link href="CSS/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles -->
+  <link href="CSS/dashboard.css" rel="stylesheet">
+
+  <script src="js/login-timeout.js"></script>
+  <script src="js/sort-table.js"></script>
+</head>
+
+<body>
+
+  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="student-dashboard.html">Good Grades</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+      data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-nav">
+    </div>
+  </header>
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"></nav>
+
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 border-bottom">
+          <h1 class="h2" id="courseTitle">Course Name</h1>
+          <form class="form-inline d-flex justify-content-end">
+            <button id="gradesBtn" type="button" class="btn btn-outline-primary mb-2 px-2 py-1 mx-1 active"><span
+                data-feather="bar-chart-2"></span> Grades</button>
+            <button id="whatIfBtn" type="button" class="btn btn-outline-primary mb-2 px-2 py-1 mx-1"><span
+                data-feather="clipboard"></span>
+              What if...</button>
+            <button id="attendanceBtn" type="button" class="btn btn-outline-primary mb-2 px-2 py-1 mx-1"><span
+                data-feather="check-circle"></span>
+              Attendance</button>
+            <button id="instructorBtn" type="button" class="btn btn-outline-primary mb-2 px-2 py-1 mx-1"><span
+                data-feather="user"></span>
+              Instructor</button>
+          </form>
+        </div>
+        <div id="gradebook">
+          <div class="justify-content-start align-items-center pt-1 pb-2">
+            <form class="form-inline d-flex justify-content-start">
+              <input class="form-control my-2" type="text" id="input" placeholder="Search for an assignment">
+              <button id="gradesToggle" type="button" class="btn btn-primary my-2 px-2 py-1 mx-1 text-nowrap">
+                Show Percentage</button>
+            </form>
+          </div>
+          <div id="full-grades-table">
+            <table class="table table-bordered sortable" id="grades-table">
+              <thead class="table-primary">
+                <tr>
+                  <th class="align-middle" scope="col">Category</th>
+                  <th class="align-middle" scope="col">Assignment</th>
+                  <th class="align-middle text-center points" scope="col">Points</th>
+                  <th class="align-middle text-center percentage" style="display:none;" scope="col">Percentage</th>
+                  <th class="align-middle text-center" scope="col">Due Date/Time</th>
+                  <th class="align-middle text-center" scope="col">Missing</th>
+                  <th class="align-middle text-center sorttable_nosort" scope="col">Comments</th>
+                  <th class="align-middle text-center sorttable_nosort" scope="col">Flag for Audit</th>
+                </tr>
+              </thead>
+              <tbody id="grades">
+                <!-- API Insertion -->
+              </tbody>
+            </table>
+          </div>
+          <div id="total-grade-table">
+            <table class="table table-bordered table-striped">
+              <thead class="table-secondary" id=totalGradeHeader>
+                <tr>
+                  <th scope="col">Course Grade:</th>
+                  <th class="text-center w-25" scope="col" id="totalGrade">
+                    <!-- API Insertion -->
+                  </th>
+                  <th class="text-center w-25" scope="col" id="letterGrade">
+                    <!-- API Insertion -->
+                  </th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+
+          <div class="modal fade" id="audit_modal" tabindex="-1" role="dialog"
+            aria-labelledby="Audit message for instructor" aria-hidden="true"
+            data-bs-keyboard="false" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Request Audit</h5>
+                </div>
+                <div class="modal-body">
+                  If you believe this assignment has been graded incorrectly, you can request your instructor to review
+                  it.<br>
+                  Enter your reasoning below to start a message thread:<br><br>
+                  To: <b><span id=instructorNameAudit>Instructor</span></b><br>
+                  Subject: Requesting review of "<b><span id=assignmentName>Assignment Name</span></b>"<br>
+                  Message:<br>
+                  <textarea id="auditMessage" cols="60" rows="7"></textarea><br>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    id="auditCancel">Cancel</button>
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="auditSubmit">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="checked_audit_modal" tabindex="-1" role="dialog"
+            aria-labelledby="Message for audit already requested" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Audit already requested!</h5>
+                </div>
+                <div class="modal-body">
+                  An audit was already requested for this assignment.<br>
+                  Audit requests cannot be cancelled.<br>
+                  Send your instructor a message to cancel the request or add new information.
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="auditClose">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div id="what-if" style="display: none;" class="pb-2 flex-column">
+          <div class="justify-content-start align-items-center pt-1 pb-2">
+            <form class="form-inline d-flex justify-content-end">
+              <button type="button" class="btn btn-primary my-2 px-2 py-1 mx-1 text-nowrap" data-bs-toggle="modal"
+                data-bs-target="#instructions_modal"><span data-feather="help-circle"></span> Show Instructions
+              </button>
+              <button id="whatif-reset" type="button" class="btn btn-primary my-2 px-2 py-1 mx-1 text-nowrap"><span
+                  data-feather="refresh-cw"></span> Reset</button>
+            </form>
+          </div>
+          <!-- Modal -->
+          <div class="modal fade" id="instructions_modal" tabindex="-1" role="dialog"
+            aria-labelledby="Instructions panel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Instructions</h5>
+                </div>
+                <div class="modal-body">
+                  An empty text field counts as 0 points earned.<br>
+                  Type a dash (-) to exclude the assignment from the calculated total.<br><br>
+                  A red background indicates a missing assignment.<br>
+                  A blue background indicates an ungraded assignment.<br><br>
+                  Points Earned: Sum of all numbers in the 'Points Earned' column.<br>
+                  Points Used: Sum of the points possible for included assignments.<br>
+                  Course Points: Sum of all numbers in the 'Points Possible' column.
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex-column">
+            <table class="table table-bordered sortable" id="whatif-table">
+              <thead class="table-primary">
+                <tr>
+                  <th class="align-middle" scope="col">Category</th>
+                  <th class="align-middle" scope="col">Assignment</th>
+                  <th class="align-middle text-center sorttable_nosort" scope="col">Points Earned</th>
+                  <th class="align-middle text-center" scope="col">Points Possible</th>
+                  <th class="align-middle text-center" scope="col">Due Date/Time</th>
+                </tr>
+              </thead>
+              <tbody id="whatif-assignments">
+                <!-- API Insertion -->
+              </tbody>
+            </table>
+          </div>
+          <table class="table table-bordered table-striped">
+            <thead class="table-secondary">
+              <tr>
+                <th scope="col">Course Grade:</th>
+                <th class="text-center w-25" scope="col" id="whatif-totalGrade">
+                  <!-- API Insertion -->
+                </th>
+                <th class="text-center w-25" scope="col" id="whatif-letterGrade">
+                  <!-- API Insertion -->
+                </th>
+              </tr>
+            </thead>
+          </table>
+          <table class="table table-bordered table-striped">
+            <thead class="table-secondary">
+              <tr>
+                <th scope="col">Points Earned:</th>
+                <td class="text-center align-middle w-25" scope="col" id="whatif-pointsEarned">
+                  <!-- API Insertion -->
+                </td>
+                <th scope="col">Points Used:</th>
+                <td class="text-center align-middle w-25" scope="col" id="whatif-pointsUsed">
+                  <!-- API Insertion -->
+                </td>
+                <th scope="col">Course Points:</th>
+                <td class="text-center align-middle w-25" scope="col" id="whatif-pointsAvailable">
+                  <!-- API Insertion -->
+                </td>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div id="attendance" style="display: none;" class="pt-3 pb-2 flex-column">
+          <table class="table table-bordered pt-3" id="attendance-table">
+            <thead class="table-primary">
+              <tr>
+                <th class="align-middle text-center" colspan="2">
+                  <h1 class="h4">Attendance Records</h1>
+                </th>
+              </tr>
+              <tr>
+                <th class="align-middle text-center">Date</th>
+                <th class="align-middle text-center">Present</th>
+              </tr>
+            </thead>
+            <tbody id="attendance-records">
+              <!-- API Insertion -->
+            </tbody>
+          </table>
+        </div>
+        <div id="instructor" style="display: none;" class="pt-3 pb-2 flex-column">
+          <table class="table table-bordered" id="instructor-table">
+            <thead class="table-primary">
+              <tr>
+                <th class="align-middle" colspan="2">
+                  <h1 class="h4" id="instructor_name">
+                    <!-- API Insertion -->
+                  </h1>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="align-middle w-25" scope="col">Email:</td>
+                <td class="align-middle" scope="col" id="instructor_email">
+                  <!-- API Insertion -->
+                </td>
+              </tr>
+              <tr>
+                <td class="align-middle w-25" scope="col">Phone Number:</td>
+                <td class="align-middle" scope="col" id="instructor_phone_number">
+                  <!-- API Insertion -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="flex-column">
+            <form class="form-inline d-flex justify-content-start">
+              <button type="button" class="btn btn-primary my-2 px-2 py-1 mx-1 text-nowrap" data-bs-toggle="modal"
+                data-bs-target="#message_modal">
+                <span data-feather="send"></span> Send Message
+              </button>
+            </form>
+          </div>
+
+          <div class="modal fade" id="message_modal" tabindex="-1" role="dialog"
+            aria-labelledby="Send message to instructor" aria-hidden="true"
+            data-bs-keyboard="false" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Send Message</h5>
+                </div>
+                <div class="modal-body">
+                  To: <b><span id=instructorNameMessage>Instructor</span></b><br>
+                  Subject:<br>
+                  <textarea id="teacherSubject" cols="60" rows="2"></textarea><br>
+                  Message:<br>
+                  <textarea id="teacherMessage" cols="60" rows="7"></textarea><br>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="messageCancel">Cancel</button>
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="messageSend">Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+    </div>
+    </main>
+
+  </div>
+  </div>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/tableFunctions.js"></script>
+  <script src="js/main.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    window.addEventListener("load", async () => {
+      //Grades Table
+      var warning = feather.icons['alert-circle'].toSvg();
+      var scores = [];
+      const apiGrades = await apiCall(`student/grades/${getQueryVariable('id')}`);
+      document.getElementById("courseTitle").innerHTML = apiGrades.name.name;
+      for (let assignment of apiGrades.table) {
+        var points = checkNull(assignment.points_received);
+        var missing = checkMissing(assignment.missing);
+        scores[assignment.grades_id] = points;
+        document.getElementById("grades").innerHTML += `
+            <tr>
+              <td scope="row">${assignment.assignment_category}</td>
+              <td scope="row">${assignment.name}</td>
+              <td class="text-center points" style="background-color: ${rowColor(points / assignment.points_possible)}">${points}/${assignment.points_possible}</td>
+              <td class="text-center percentage" style="display: none; background-color: ${rowColor(points / assignment.points_possible)}">${(points === "-" ? "-" : toPercentage(assignment.points_received / assignment.points_possible))}%</td>
+              <td class="text-center">${assignment.due_date}</td>
+              <td class="text-center" style="background-color: ${missing.color}">${missing.icon ? (missing.icon + '<p style="display: none;">1</p>') : '<p style="display: none;">0</p>'}</td>
+              <td class="text-center">${checkNull(assignment.instructor_notes)}</td>
+              <td class="text-center"><input onClick="auditCheck(this)" id="audit_${assignment.grades_id}" class="auditCheckBoxes form-check-input" type="checkbox" value="" 
+                ${assignment.flagged_for_audit === 1 ? 'checked' : ''} data-bs-toggle="modal" 
+                data-bs-target="${assignment.flagged_for_audit === 1 ? "#checked_audit_modal" : "#audit_modal"}">
+              </td>
+            </tr>
+          `;
+        //What-if Table
+        document.getElementById("whatif-assignments").innerHTML += `
+            <tr>
+              <td scope="row">${assignment.assignment_category}</td>
+              <td scope="row">${assignment.name}</td>
+              <td class="text-center w-25" style="background-color: ${(points === "-" ? "hsla(180, 100%, 60%, 0.6)" : missing.color)}"><input type="text" class="form-control w-100 inputPoints"  id="input_${assignment.grades_id}" value=${points}></td>
+              <td class="text-center pointsPossible" id="possible_${assignment.grades_id}" style="background-color: ${(points === "-" ? "hsla(180, 100%, 60%, 0.6)" : missing.color)}">${assignment.points_possible}</td>
+              <td class="text-center">${assignment.due_date}</td>
+            </tr>
+          `;
+      }
+      //Total Grade
+      document.getElementById("totalGrade").innerHTML = toPercentage(apiGrades.total_grade) + '%';
+      document.getElementById("letterGrade").innerHTML = letterGrade(apiGrades.total_grade);
+      document.getElementById("letterGrade").style = `background-color: ${rowColor(apiGrades.total_grade)}`
+
+      // For What-If: Create points possible array & get total course points
+      var addPoints = document.getElementsByClassName("pointsPossible");
+      var pointsPossible = [];
+      var totalPoints = 0;
+      for (let x of addPoints) {
+        pointsPossible[x.id.replace("possible_", "")] = parseInt(x.innerText);
+        totalPoints += parseInt(x.innerText);
+      }
+      // Calculate what-if grade on keyup
+      function whatIfGrade() {
+        var earned = 0;
+        var included = [];
+        for (let x of inputFields) {
+          var grades_id = x.id.replace("input_", "");
+          var inputVal = x.value;
+          if (inputVal === "-") { //exclude this assignment
+            continue;
+          } else if (inputVal === "" || inputVal === null) { //include at score 0
+            included.push(grades_id);
+          } else { //include at entered score
+            included.push(grades_id);
+            var value = parseInt(x.value);
+            if (!isNaN(value)) {
+              earned += value;
+            }
+          }
+        }
+        var total = 0;
+        var grade;
+        for (var i = 0; i < included.length; i++) {
+          total += pointsPossible[included[i]];
+        }
+        (total != 0) ? grade = earned / total : grade = total;
+        document.getElementById("whatif-totalGrade").innerHTML = toPercentage(grade) + '%';
+        document.getElementById("whatif-letterGrade").innerHTML = letterGrade(grade);
+        document.getElementById("whatif-letterGrade").style = `background-color: ${rowColor(grade)}`
+        document.getElementById("whatif-pointsEarned").innerHTML = earned;
+        document.getElementById("whatif-pointsUsed").innerHTML = total;
+      }
+      // For What-If: Assign text fields function on key up
+      var inputFields = document.getElementsByClassName("inputPoints");
+      for (let x of inputFields) {
+        x.onkeyup = whatIfGrade;
+      }
+      // Restore database values on what-if page
+      function whatIfReset() {
+        var inputFields = document.getElementsByClassName("inputPoints");
+        for (let x of inputFields) {
+          x.value = scores[x.id.replace("input_", "")];
+        }
+        whatIfGrade();
+      }
+      //Assign reset button onclick
+      document.getElementById("whatif-reset").onclick = whatIfReset;
+
+      //What-If Grade default values
+      whatIfGrade();
+      document.getElementById("whatif-pointsAvailable").innerHTML = totalPoints;
+
+      //Attendance Records
+      var attendance = [];
+      for (let present of apiGrades.records) {
+        attendance.push(present.attendance_id);
+      }
+      var presentIcon = feather.icons['check'].toSvg();
+      var absentIcon = feather.icons['x'].toSvg();
+      document.getElementById("attendance-records").innerHTML = "";
+      for (let record of apiGrades.meetings) {
+        document.getElementById("attendance-records").innerHTML += `
+            <tr style="background-color: ${(attendance.includes(record.attendance_id) ? "hsla(160, 100%, 50%, 0.3)" : "hsla(0, 100%, 50%, 0.3)")}">
+              <td class="text-center w-50" scope="row">${record.date}</td>
+              <td class="text-center w-50" scope="row">
+                ${(attendance.includes(record.attendance_id) ? presentIcon : absentIcon)}</td>
+            </tr>
+          `;
+      }
+      document.getElementById("attendance-records").innerHTML += `
+            <tr>
+              <th class="text-center w-50" scope="row">Total:</td>
+              <td class="text-center w-50" scope="row">${attendance.length} / ${apiGrades.meetings.length}</td>
+            </tr>
+          `;
+
+      //Teacher Info
+      for (let info of apiGrades.teacher) {
+        document.getElementById("instructor_name").innerHTML = info.first_name + " " + info.last_name;
+        document.getElementById("instructor_email").innerHTML = info.email_address;
+        document.getElementById("instructor_phone_number").innerHTML = info.phone_number;
+        //For audit modal
+        document.getElementById("instructorNameAudit").innerHTML = info.first_name + " " + info.last_name;
+        //For teacher modal
+        document.getElementById("instructorNameMessage").innerHTML = info.first_name + " " + info.last_name;
+      }
+
+    });
+
+    //Audit checkbox onclick function
+    function auditCheck(box) {
+      //If box is already checked, leave checked and skip
+      if (!box.checked) {
+        box.checked = true;
+        return true;
+      }
+      //Set unique text in modal
+      let assignmentName = box.parentNode.parentNode.childNodes[3].innerText;
+      document.getElementById("assignmentName").innerHTML = assignmentName;
+      //Set cancel button to not check the box
+      document.getElementById("auditCancel").onclick = () => { box.checked = false };
+      //Set submit button: change modal target, submitAudit call, empty text field
+      document.getElementById("auditSubmit").onclick = () => {
+        box.setAttribute("data-bs-target", "#checked_audit_modal");
+        let grades_id = parseInt(box.id.replace("audit_", ""));
+        let subject = "Audit Requested for '" + assignmentName + "'";
+        let message = document.getElementById("auditMessage").value;
+        submitAudit(grades_id, subject, message);
+        document.getElementById("auditMessage").value = "";
+      };
+    }
+    // update audit in DB, send message
+    async function submitAudit(gradesID, subject, message) {
+      let x = await apiCall(`student/audit`, "POST", {
+        grades_id: gradesID,
+        subject: subject,
+        message: message
+      });
+    }
+
+    //Teacher message modal: set cancel button to clear fields
+    document.getElementById("messageCancel").onclick = () => {
+      document.getElementById("teacherSubject").value = "";
+      document.getElementById("teacherMessage").value = "";
+    };
+    
+    //Teacher message modal: send message
+    document.getElementById("messageSend").onclick = async _ => {
+      await apiCall(`student/message`, "POST", {
+        section_id: parseInt(getQueryVariable('id')),
+        subject: document.getElementById("teacherSubject").value,
+        message: document.getElementById("teacherMessage").value
+      });
+    }
+
+    // Search for an assignment by name
+    function search() {
+      var input = document.getElementById("input");
+      var filter = input.value.toUpperCase();
+      var table = document.getElementById("grades-table");
+      var tr = table.getElementsByTagName("tr");
+      var td, txtValue;
+      // Loop through assignment names
+      for (var i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+    document.getElementById("input").setAttribute("onkeyup", "search()");
+
+    // Toggle between grades, what-if, attendance, and teacher info
+    function toggleView(id) {
+      document.getElementById("what-if").style.display = "none";
+      document.getElementById("instructor").style.display = "none";
+      document.getElementById("gradebook").style.display = "none";
+      document.getElementById("attendance").style.display = "none";
+      document.getElementById("whatIfBtn").classList.remove("active");
+      document.getElementById("instructorBtn").classList.remove("active");
+      document.getElementById("gradesBtn").classList.remove("active");
+      document.getElementById("attendanceBtn").classList.remove("active");
+      switch (id) {
+        case 'whatIfBtn':
+          document.getElementById("what-if").style.display = "flex";
+          break;
+        case 'instructorBtn':
+          document.getElementById("instructor").style.display = "flex";
+          break;
+        case 'gradesBtn':
+          document.getElementById("gradebook").style.display = "inline";
+          break;
+        case 'attendanceBtn':
+          document.getElementById("attendance").style.display = "flex";
+          break;
+      }
+      document.getElementById(id).classList.add("active");
+    }
+    //Set onclick for all toggle buttons
+    document.getElementById("whatIfBtn").setAttribute("onClick", "toggleView(this.id)");
+    document.getElementById("instructorBtn").setAttribute("onClick", "toggleView(this.id)");
+    document.getElementById("gradesBtn").setAttribute("onClick", "toggleView(this.id)");
+    document.getElementById("attendanceBtn").setAttribute("onClick", "toggleView(this.id)");
+
+
+    //Toggle between points and percentage
+    function gradesToggle() {
+      var points = document.getElementsByClassName("points");
+      var percentage = document.getElementsByClassName("percentage");
+      if (document.getElementById("gradesToggle").innerText === "Show Percentage") {
+        for (let x of points) {
+          x.style.display = "none";
+        }
+        for (let x of percentage) {
+          x.style.display = "table-cell"
+        }
+        document.getElementById("gradesToggle").innerText = "Show Points";
+      } else {
+        for (let x of points) {
+          x.style.display = "table-cell";
+        }
+        for (let x of percentage) {
+          x.style.display = "none";
+        }
+        document.getElementById("gradesToggle").innerText = "Show Percentage";
+      }
+    }
+    //Assign toggle button onclick
+    document.getElementById("gradesToggle").onclick = gradesToggle;
+
+  </script>
+  <script type="text/javascript">feather.replace({ 'aria-hidden': 'true' })</script>
+</body>
+
+</html>
